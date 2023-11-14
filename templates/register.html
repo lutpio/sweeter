@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hello Bulma!</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"
+      integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      {% if msg %} alert("{{ msg }}"); {% endif %}
+
+      function register(){
+        let userid = $('#userid').val();
+        let userpw = $('#userpw').val();
+        let usernick = $('#usernick').val();
+        console.log(`${userid} ${userpw} ${usernick}`)
+        $.ajax({
+            type: 'POST',
+            url: '/api/register',
+            data: {
+                id_give: userid,
+                pw_give : userpw,
+                nickname_give : usernick
+              },
+            success: function(response) {
+                if (response.result === 'success') {
+                    alert(response.msg);
+                    window.location.href = `/login`;
+                } else if(response.result === 'exists'){
+                    alert(response.msg);
+                }else{
+                    alert('Something went wrong');
+
+                }
+            }
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <section class="section has-text-centered">
+      <h1 class="title">Register</h1>
+      <div class="container" style="width: 50%">
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label" for="userid">ID</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input
+                  id="userid"
+                  class="input"
+                  type="text"
+                  placeholder="myID"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label" for="userpw">PW</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input
+                  id="userpw"
+                  class="input"
+                  type="password"
+                  placeholder="myPassword"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label" for="usernick">NICKNAME</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input
+                  id="usernick"
+                  class="input"
+                  type="text"
+                  placeholder="Nickname"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label">
+            <!-- Left empty for spacing -->
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <button class="button is-primary" onclick="register()">
+                  Register
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
